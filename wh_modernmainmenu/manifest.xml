@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE extension SYSTEM "ext-1.0.dtd">
+
+<extension engine="1.0">
+	<id>wh_modernmainmenu</id>
+	<title>WendyH Modern main menu</title>
+	<version>0.0.1</version>
+	<description>Alternate Modern main menu</description>
+	<author>Wendy.Hane@gmail.com</author>
+
+	<minversion>1.4RC1</minversion>
+	<maxtestedon>1.4.2</maxtestedon>
+
+	<hooks>
+
+		<hook id="fn_generate_navlinks_end"><![CDATA[
+
+		require $ext_info['path'].'/menu.php';
+
+		]]></hook>
+
+	</hooks>
+</extension>

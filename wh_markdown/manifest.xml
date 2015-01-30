@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE extension SYSTEM "ext-1.0.dtd">
+
+
+<extension engine="1.0">
+	<id>wh_markdown</id>
+	<title>Markdown BBcode</title>
+	<version>0.0.1</version>
+	<description>Add BBcode tag «markdown»</description>
+	<author>Wendy.Hane@gmail.com</author>
+
+	<minversion>1.4RC1</minversion>
+	<maxtestedon>1.4.2</maxtestedon>
+
+
+	<hooks>
+		<!-- -->
+		<hook id="pun_bbcode_pre_tags_merge"><![CDATA[
+			$tags_without_attr[] = 'markdown';
+			$tags_without_attr[] = 'url';
+		]]></hook>
+
+
+		<!-- -->
+		<hook id="ps_preparse_tags_start"><![CDATA[
+			$tags_block[] = 'markdown';
+			$tags[] = 'markdown';
+			$tags_opened[] = 'markdown';
+			$tags_closed[] = 'markdown';
+		]]></hook>
+
+
+		<!-- -->
+		<hook id="ps_preparse_bbcode_start" priority="2"><![CDATA[
+			$tags[] = 'markdown';
+			$tags_opened[] = 'markdown';
+			$tags_closed[] = 'markdown';
+			$tags_fix[] = 'markdown';
+			require_once $ext_info['path'].'/func.php';
+			$text = wh_MDHide($text);
+		]]></hook>
+
+		<!-- -->
+		<hook id="ps_preparse_bbcode_end"><![CDATA[
+			$text = wh_MDUnhide($text);
+		]]></hook>
+
+		<!-- -->
+		<hook id="ps_parse_message_pre_split" priority="2"><![CDATA[
+			require_once $ext_info['path'].'/func.php';
+			$text = wh_MDHide($text);
+		]]></hook>
+
+		<!-- -->
+		<hook id="ps_parse_message_post_merge" priority="2"><![CDATA[
+			$text = wh_MDUnhide($text);
+			$text = wh_MD_Parse($text);
+		]]></hook>
+
+
+		<!-- -->
+		<hook id="hd_head" priority="7"><![CDATA[
+			if (defined('FORUM_PAGE')) {
+				if (in_array(FORUM_PAGE, array('news', 'postdelete', 'modtopic',
+					'post', 'viewtopic', 'searchposts', 'help',
+					'pun_pm-inbox', 'pun_pm-outbox', 'postedit', 'pun_pm-write'))) {
+
+					if (!isset($wh_markdown_styles_loaded)) {
+						$wh_markdown_styles_loaded = TRUE;
+
+						require_once $ext_info['path'].'/func.php';
+
+						$forum_loader->add_css(wh_LoadCSS(), array('type' => 'inline'));
+					}
+				}
+			}
+		]]></hook>
+
+
+		<!-- pun_bbcode - add button -->
+		<hook id="pun_bbcode_pre_buttons_output"><![CDATA[
+			$this->add_button(array('name'	=> 'wh_markdown', 'title' => 'markdown', 'tag' => 'markdown', 'image' => true));
+		]]></hook>
+
+		<!-- pun_bbcode - add styles for button -->
+		<hook id="pun_bbcode_styles_loaded"><![CDATA[
+			if (!isset($wh_markdown_styles_loaded )) {
+				$wh_markdown_styles_loaded = TRUE;
+				
+				require_once $ext_info['path'].'/func.php';
+		
+				$forum_loader->add_css(wh_LoadCSS(), array('type' => 'inline'));
+
+			}
+		]]></hook>
+	</hooks>
+</extension>

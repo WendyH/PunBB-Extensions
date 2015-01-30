@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE extension SYSTEM "ext-1.0.dtd">
+
+<extension engine="1.0">
+	<id>wh_highlightwords</id>
+	<title>WendyH Highlight words in forum posts</title>
+	<version>0.0.1</version>
+	<description>Highlight searching words in posts and help</description>
+	<author>Wendy.Hane@gmail.com</author>
+
+	<minversion>1.4RC1</minversion>
+	<maxtestedon>1.4.2</maxtestedon>
+
+	<hooks>
+
+		<hook id="vt_row_pre_display"><![CDATA[
+
+			require_once $ext_info['path'].'/highlightwords.php';
+
+			wh_checkForNeedHighlightingWords();
+
+		]]></hook>
+
+		<hook id="se_results_posts_row_pre_display"><![CDATA[
+
+			require_once $ext_info['path'].'/highlightwords.php';
+
+			wh_checkForNeedHighlightingWords();
+
+		]]></hook>
+
+		<hook id="he_end"><![CDATA[
+
+			require_once $ext_info['path'].'/highlightwords.php';
+
+			wh_checkForNeedHighlightingWords();
+
+		]]></hook>
+
+		<hook id="hd_head"><![CDATA[
+			if (defined('FORUM_PAGE')) {
+				if (in_array(FORUM_PAGE, array('news', 'post', 'viewtopic', 'searchposts', 'pun_pm-inbox', 'pun_pm-outbox', 'help'))) {
+					$forum_loader->add_css('.shl{background:#E9FE7B}', array('type' => 'inline'));
+				}
+			}
+		]]></hook>
+
+	</hooks>
+</extension>

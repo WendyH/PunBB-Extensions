@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE extension SYSTEM "ext-1.0.dtd">
+
+<extension engine="1.0">
+	<id>wh_toplinesearch</id>
+	<title>WendyH Top line search</title>
+	<version>0.0.1</version>
+	<description>Top line with inline search and login fields. For use needs to add '<!-- wh_topline -->' to main.tpl or other templates.</description>
+	<author>Wendy.Hane@gmail.com</author>
+
+	<minversion>1.4RC1</minversion>
+	<maxtestedon>1.4.2</maxtestedon>
+
+	<hooks>
+
+		<hook id="hd_gen_elements"><![CDATA[
+
+			require $ext_info['path'].'/topline.php';
+
+		]]></hook>
+
+		<hook id="hd_head"><![CDATA[
+			if (defined('FORUM_PAGE') && !isset($wh_toplinesearch_styles_loaded)) {
+				$wh_toplinesearch_styles_loaded = TRUE;
+				$filecss = $ext_info['path'].'/topline.css';
+				if (file_exists($filecss)) {
+					$csstext = str_replace(array('\r', '\n'), '', file_get_contents($filecss));
+					$forum_loader->add_css($csstext, array('type' => 'inline'));
+				}
+			}
+		]]></hook>
+
+	</hooks>
+</extension>

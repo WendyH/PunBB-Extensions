@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE extension SYSTEM "ext-1.0.dtd">
+
+
+<extension engine="1.0">
+	<id>wh_codehighlight</id>
+	<title>WendyH Code highlight</title>
+	<description>A PunBB extension that allows syntax highlighting of code blocks with detecting the language. Based on Prism (http://prismjs.com).
+Support languages: markup (XML, HTML), CSS, Javascript, PHP, Python, Ruby, CSharp, Pascal, Actionscript. Other langs highlight as C like.</description>
+	<author>Wendy.Hane@gmail.com</author>
+	<version>0.0.1</version>
+
+	<!-- -->
+	<minversion>1.4RC1</minversion>
+	<maxtestedon>1.4.2</maxtestedon>
+
+
+	<!-- -->
+	<hooks>
+
+		<!-- include js and css -->
+		<hook id="hd_head" priority="9"><![CDATA[
+			if (defined('FORUM_PAGE')) {
+				if (in_array(FORUM_PAGE, array('news', 'postdelete', 'postedit', 'modtopic', 'post', 'help', 'viewtopic', 'searchposts', 'pun_pm-inbox', 'pun_pm-outbox'))) {
+					if ($forum_user['style'] != 'Oxygen' && file_exists($ext_info['path'].'/css/'.$forum_user['style'].'/wh_codehighlight.min.css')) {
+						$forum_loader->add_css($ext_info['url'].'/css/'.$forum_user['style'].'/wh_codehighlight.min.css');
+					} else {
+						$forum_loader->add_css($ext_info['url'].'/css/Oxygen/wh_codehighlight.min.css');
+					}
+					$forum_loader->add_js($ext_info['url'].'/js/wh_codehighlight.min.js', array('weight' => 86, 'async' => false, 'group' => FORUM_JS_GROUP_SYSTEM));
+				}
+			}
+		]]></hook>
+
+	</hooks>
+</extension>
